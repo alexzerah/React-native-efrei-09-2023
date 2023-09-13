@@ -18,8 +18,9 @@ export default function App() {
           .then((pokemonData) => {
             return temporaryPokemon.push(pokemonData);
           })
-          
+
         })).then(() => {
+          temporaryPokemon.sort((poke1,poke2) => poke1.id - poke2.id);
           setPokes(temporaryPokemon)
         })
       })
@@ -36,6 +37,9 @@ export default function App() {
         <>
          <Text key={poke.name}>{poke.name}</Text>
          <Image source={{uri: poke.sprites.front_default}} style={{width: 50, height: 50}} />
+         <Text>Height : {poke.height}</Text>
+         <Text>Weight : {poke.weight}</Text>
+         {poke.types.map(e => <Text style={styles[e.type.name]}>{e.type.name}</Text>)}
         </>
         )
       }) : <Text>Loading...</Text>}
@@ -51,4 +55,58 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  grass: {
+    backgroundColor: 'green',
+  },
+  poison: {
+    backgroundColor: 'purple',
+  },
+  fire: {
+    backgroundColor: 'red',
+  },
+  flying: {
+    backgroundColor: 'grey',
+  },
+  normal: {
+    backgroundColor: 'lightgrey',
+  },
+  fighting: { 
+    backgroundColor: 'brown',
+  },
+  ground: {
+    backgroundColor: 'lightbrown',
+  },
+  rock: {
+    backgroundColor: 'darkbrown',
+  },
+  bug: {
+    backgroundColor: 'lightgreen',
+  },
+  ghost: {
+    backgroundColor: 'darkpurple',
+  },
+  water: {
+    backgroundColor: 'blue',
+  },
+  electric: {
+    backgroundColor: 'yellow',
+  },
+  psychic: {
+    backgroundColor: 'pink',
+  },
+  ice: {
+    backgroundColor: 'lightblue',
+  },
+  dragon: {
+    backgroundColor: 'darkblue',
+  },
+  dark: {
+    backgroundColor: 'black',
+  },
+  fairy: {
+    backgroundColor: 'lightpink',
+  },
+  steel: {
+    backgroundColor: 'darkgrey',
+  }
 });
