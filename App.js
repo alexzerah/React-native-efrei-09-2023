@@ -18,8 +18,9 @@ export default function App() {
           .then((pokemonData) => {
             return temporaryPokemon.push(pokemonData);
           })
-          
+
         })).then(() => {
+          temporaryPokemon.sort((poke1,poke2) => poke1.id - poke2.id);
           setPokes(temporaryPokemon)
         })
       })
@@ -36,6 +37,8 @@ export default function App() {
         <>
          <Text key={poke.name}>{poke.name}</Text>
          <Image source={{uri: poke.sprites.front_default}} style={{width: 50, height: 50}} />
+         <Text>Height : {poke.height}</Text>
+         <Text>Weight : {poke.weight}</Text>
         </>
         )
       }) : <Text>Loading...</Text>}
