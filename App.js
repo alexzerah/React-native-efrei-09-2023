@@ -1,21 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
 export default function App() {
   
-  const [poke, setPoke] = useState();
+  const [poke, setPoke] = useState(null);
 
   const getPoke = () => {
     const fetching = fetch('https://pokeapi.co/api/v2/pokemon/429')
       .then((response) => response.json())
-       .then((json) => setPoke(<Text key={json.id}>{json.name}</Text>))
+       .then((pokemonData) => setPoke(pokemonData))
   }
-  getPoke();
+
+  useEffect(() => {
+    getPoke();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {poke? poke : null}
+      <Image source={{uri: poke?.sprites.front_default}} style={{width: 150, height: 150}}></Image> : <Text>Chargement</Text>
+      
+      {poke? <Text>{poke.name}</Text> : null}
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
