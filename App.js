@@ -3,31 +3,46 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 export default function App() {
-  
-  const [poke, setPoke] = useState(null);
 
-  const getPoke = () => {
-    const fetching = fetch('https://pokeapi.co/api/v2/pokemon/429')
+  const [pokes, setPokes] = useState([]);
+
+  const getListPoke = () => {
+    const fetching = fetch('https://pokeapi.co/api/v2/pokemon')
       .then((response) => response.json())
-       .then((pokemonData) => setPoke(pokemonData))
+       .then((pokemonData) => {
+        const temporaryPokemon = [];
+
+        Promise.all(pokemonData.results.map((pokemon) => {          
+          return fetch(pokemon.url)
+          .then((response) => response.json())
+          .then((pokemonData) => {
+            return temporaryPokemon.push(pokemonData);
+          })
+          
+        })).then(() => {
+          setPokes(temporaryPokemon)
+        })
+      })
   }
 
   useEffect(() => {
-    getPoke();
+    getListPoke()
   }, []);
 
   return (
     <View style={styles.container}>
-      <Image source={{uri: poke?.sprites.front_default}} style={{width: 150, height: 150}}></Image> : <Text>Chargement</Text>
-      
-      {poke? <Text>{poke.name}</Text> : null}
-      <Text>Open up App.js to start working on your app!</Text>
+      {pokes.length > 0 ? pokes.map((poke) => {
+        return (
+        <>
+         <Text key={poke.name}>{poke.name}</Text>
+         <Image source={{uri: poke.sprites.front_default}} style={{width: 50, height: 50}} />
+        </>
+        )
+      }) : <Text>Loading...</Text>}
       <StatusBar style="auto" />
     </View>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
