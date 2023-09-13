@@ -39,6 +39,7 @@ export default function App() {
          <Image source={{uri: poke.sprites.front_default}} style={{width: 50, height: 50}} />
          <Text>Height : {poke.height}</Text>
          <Text>Weight : {poke.weight}</Text>
+         {poke.types.map(e => <Text>{e.type.name}</Text>)}
         </>
         )
       }) : <Text>Loading...</Text>}
